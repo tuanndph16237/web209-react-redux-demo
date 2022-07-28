@@ -1,8 +1,12 @@
-import React from "react"
-import { useDispatch } from "react-redux"
+import { Typography, Row, Col, Button } from "antd";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { currency } from "../helper";
+import { useDispatch } from "react-redux";
+
+const { Title } = Typography;
 
 const Product = ({ product }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const addToCart = (product) => {
     dispatch({
       type: "cart/add",
@@ -10,17 +14,20 @@ const Product = ({ product }) => {
     })
   }
   return (
-    <div className='product-container'>
-      <h3>Product</h3>
-      {product?.map(item => (
-        <div className="product-item" onClick={() => addToCart(item)}>
-          <h4>{item.name}</h4>
-          <div>{item.saleOffPrice}</div>
-          <img style={{ width: "50%" }} src={item.image} />
-        </div>
-      ))}
+    <div className="product">
+      <Title level={3}>Sản phẩm</Title>
+      <Row gutter={10}>
+        {product?.map((item) => (
+          <Col span={8} key={item.id}>
+            <Title level={5}>{item.name}</Title>
+            <img width="50%" src={item.image} />
+            <div>{currency(item.saleOffPrice)}</div>
+            <Button onClick={() => addToCart(item)} type="primary" danger icon={<ShoppingCartOutlined />} />
+          </Col>
+        ))}
+      </Row>
     </div>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;

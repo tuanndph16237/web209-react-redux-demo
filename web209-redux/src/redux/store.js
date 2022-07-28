@@ -1,20 +1,7 @@
-const initialValue = {
-    products: [],
-    cart: [],
-    total: 0
-}
+import { createStore, applyMiddleware } from "redux";
+import thunk from 'redux-thunk'
+import rootReducer from "./reducer";
 
-const rootReducer = (state = initialValue, action) => {
-    switch(action.type) {
-        case "cart/add":
-            const newCart = [...state.cart, action.payload]
-            return {
-                ...state,
-                cart: newCart,
-            };
-        default:
-            return state;
-    }
-}
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
-export default rootReducer;
+export default store;

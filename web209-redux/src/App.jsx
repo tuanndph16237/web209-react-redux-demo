@@ -1,24 +1,31 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
-import Product from './components/product'
-import Cart from './components/cart'
+import { Spin} from "antd";
+import { useEffect, useState } from "react";
+import Product from "./components/product";
+import { useDispatch, useSelector } from "react-redux";
+import Cart from "./components/cart";
+import { GETPRODUCTS } from "./redux/action";
+import "./App.css";
 
-function App() {
-  const [products, setProducts] = useState([])
-  const fetchProduct = async function() {
-    const data = await(await fetch('https://62de615accdf9f7ec2d66ae3.mockapi.io/api/products')).json()
-    setProducts(data)
-  }
+export default function App() {
+  const dispatch = useDispatch()
+  const {products} = useSelector(store => store)
+
   useEffect(() => {
-    fetchProduct()
-  }, [])
+    dispatch(GETPRODUCTS)
+  }, []);
+
+  if(products.length < 1) {
+    return (
+      <div className="container">
+        <Spin/>
+      </div>
+    )
+  }
+
   return (
-    <div>
-      <Product product={products}/>
+    <div className="container">
+      <Product product={products} />
       <Cart/>
     </div>
-  )
+  );
 }
-
-export default App;
